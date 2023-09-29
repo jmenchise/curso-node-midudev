@@ -22,6 +22,24 @@ const server = http.createServer((req, res) => {
       res.setHeader('content-type', 'text/html; chartset=utf-8');
       res.end('<h1>Error 404 URL NOT FOUND</h1>');
    }
+
+   if (method === 'POST') {
+      if (url === '/pokemon') {
+         let body = '';
+         req.on('data', chunk => {
+            body += chunk.toString();
+         });
+         req.on('end', () => {
+            const data = JSON.parse(body);
+            res.writeHead(201, { 'content-type': 'application/json; charset=utf-8' });
+            data.timeStamp = Date.now();
+            res.end(JSON.stringify(data));
+         });
+         return;
+      }
+      res.writeHead(404, { 'content-type': 'text/html; charset=utf-8' });
+      res.end('<h1> Error 404 URL NOT FOUND </h1>');
+   }
 });
 
 server.listen(port, () => {
