@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server-1": "nodemon http.js",
-    "server-2": "nodemon routing.js"
+    "server-2": "nodemon routing.js",
+    "server-3": "node --watch express.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   },
   "homepage": "https://github.com/jmenchise/curso-node-midudev#readme",
   "dependencies": {
+    "express": "4.18.2",
     "picocolors": "1.0.0"
   },
   "devDependencies": {

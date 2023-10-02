@@ -31,6 +31,7 @@ const server = http.createServer((req, res) => {
          });
          req.on('end', () => {
             const data = JSON.parse(body);
+            //* Acá haríamos la carga de "data" en la DB.
             res.writeHead(201, { 'content-type': 'application/json; charset=utf-8' });
             data.timeStamp = Date.now();
             res.end(JSON.stringify(data));
