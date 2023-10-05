@@ -1,7 +1,7 @@
 const express = require('express');
 const crypto = require('node:crypto');
 const movies = require('./movies.json');
-const { validateMovie } = require('./schemas/movies');
+const { validateMovie, validatePartialMovie } = require('./schemas/movies');
 
 const PORT = process.env.PORT ?? 8080;
 
@@ -10,6 +10,7 @@ app.disable('x-powered-by');
 app.use(express.json());
 
 app.get('/movies', (req, res) => {
+   res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
    const { genre } = req.query;
    if (genre) {
       const filteredMovies = movies.filter(
@@ -40,6 +41,41 @@ app.post('/movies', (req, res) => {
    };
    movies.push(newMovie);
    res.status(201).json(newMovie);
+});
+
+app.patch('/movies/:id', (req, res) => {
+   const result = validatePartialMovie(req.body);
+   if (result.error) {
+      return res.status(400).json({ error: JSON.parse(result.error.message) });
+   };
+   const { id } = req.params;
+   const movieIndex = movies.findIndex(movie => movie.id === id);
+   if (movieIndex === -1) {
+      return res.status(404).json({ message: 'Movie Not Found' });
+   }
+   const updatedMovie = {
+      ...movies[movieIndex],
+      ...result.data
+   };
+   movies[movieIndex] = updatedMovie;
+   res.status(201).json(updatedMovie);
+});
+
+app.options('/movies/:id', (req, res, next) => {
+   res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+   next();
+});
+
+app.delete('/movies/:id', (req, res) => {
+   res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+   const { id } = req.params;
+   const movieIndex = movies.findIndex(movie => movie.id === id);
+   if (movieIndex === -1) {
+      return res.status(404).json({ message: 'Movie Not Found' });
+   };
+   movies.splice(movies[movieIndex], 1);
+   res.json({ message: 'Movie deleted!' });
 });
 
 app.listen(PORT, () => {
