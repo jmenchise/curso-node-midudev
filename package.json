@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "curso de NodeJS de midudev",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon app.js"
+    "server-dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,7 @@
   },
   "homepage": "https://github.com/jmenchise/curso-node-midudev#readme",
   "dependencies": {
+    "cors": "2.8.5",
     "express": "4.18.2",
     "picocolors": "1.0.0",
     "zod": "3.22.2"
