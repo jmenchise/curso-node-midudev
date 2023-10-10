@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { readJSON } from '../utilities.js';
+import { readJSON } from '../../utilities.js';
 
 //* otra forma de importar archivos .json con ESModules.
 //* es recomendable la otra forma,
